@@ -1,0 +1,64 @@
+## Machine Learning Assisted College Advising
+   Every year millions of high school students enroll in college.  About 40% of these students will not graduate.  Droping out of college is a demoralizing and expensive way to start adulthood.  The average college dropout incurs about 13,000 dolalrs in debt.  Almost 50% of these students will default on this debt.  These financial considerations are independent of the difficult to quantify psychological damage that can come from the subtle indoctrination that a university credential is a prerequisite for success and the potentially life altering knowledge that they have failed to achieve this prerequisite.  The purpose of this study is to build a model predicting the likelihood of college graduation for a student in high school, using only data that can be known about the student at the time of high school graduation.
+
+###  The Data
+   This project uses the Educational Longitudinal Study of 2002.  The Educational Longitudinal Study of 2002 followed about 16000 people over ten year period starting in their sophmore year in high school through three follow up data collections over the next decade of the individual's life.  The first follow up is in the student's senior year of high school, a second follow up two years after high school graduation and the third follow in 2012, or at about the age 26.   The entire dataset has about 5000 features made up of information collected from questionaires, academic performance data supplied by the school, and other means of collection.  Much of this data is restricted in the public release version of the study.  From the publically available data I have chosen 31 features.  The features relate to things like standardized test scores, academic performance, home life, discipline, and extracurricular activities. <br>
+ 
+   My analysis takes data from the base year and the first follow up.  These data correspond to the student's sophmore and senior year in high school respectively. These data provide a snapshot of the student at the point just before college enrollment. The college outcome data comes from the third follow up.  Thd college outcome data is the target of the modelling and predicting these outcomes is the objective of this study. For a more complete breakdown of the data please see the readme titled 'features.md' in this repository. <br>
+Link to the online [codebook](https://nces.ed.gov/OnlineCodebook/Session/Codebook/464e26ac-050e-4cc2-9347-1297cf285b4f).<br>
+### Methods
+   This project uses some basic statistics and visual explorations of the data to gain insight into college success. This study also uses classification algorithms to predict college graduation.  Algorithms used in the modeling are Random Forest, Logistic Regression, XGBoost, Gaussian Naive Bayes, and KNN.  The objective of the modelling is to correctly identify the green in the following scatterplot:<br>
+ 
+![scatter](images/3dscat1.png)
+
+### Results
+   Using fewer features provides insight into what is most important for correct classfiication of graduate/non-graduate.  A gaussian naive bayes model with the most with a 3 feature dataset was able predict with almost .75  recall score and about .65 F1 score.  This dataset's features were mathematical facility, high school GPA, and educational confidence.  The mathematical facility feature is the product of the student's math standardized test score and an ordinal value corresponding to the highest math class completed in high school.  Educational confidence is a feature in the original study, and is an ordinal value corresponding to the highest academic achievement the student expects to complete.  High school GPA, as reported in the public release version of the study is an integer value between 1 and 6 that reflects an approximation of the decimal value of grade point average.  This quality is reflected in the stratification in the above scatterplot.  <br>  
+ 
+   This study reveals what may seem obvious. Succesfull college students have verbal and mathematical standardized test scores that are, on average, greater than one standard deviation above thier peers.  It is important to note that non-college graduates populate the full range of ability as measured by standardized testing.
+ 
+![histogram](images/testinghist3.png) 
+
+Specifically, mathematical reasoning ability gives the student an advantage in both college graduation and prospects in the economy. 
+
+![mathbar](images/math_bar.png) 
+
+Succesful college students are disciplined, in that they control hedonic pursuits like video game/movies/tv etc ... and invest time outside of class on homework.  
+
+![barchart](images/edu_conf_bar.png)
+
+Educational confidence was a feature that came out of the modelling that I had included in the original feature selectino that I expected to be of minor relevance to this classification.  It is defined in the study as the highest academic achievment the student expects to complete.  Feature importance functions twice identified this feature as one of the most important features.  Whether this relationship is causation or correlation cannot be dteremined here, but suspect it is correlative.  Meaning that capable students tend to have higher expectation expectations, probablay based feedback that they have recieved in thier academic careers to date.  As such it is unlikely some kind of class or program to condition high academic goals is not likely to be effective, but this conclusion cannot be properly supported from this study.  
+
+![barchart](images/risk_bar.png)
+
+Succesfull college completers aslo tended to have fewer risk factors.  Risk factors, as defined by the study are things like household income below the poverty level, fequent school changes, broken family structure, or low educational achievment on the part of the parents.  
+
+Lastly this exploration identfied high school grade point average as being highly relevent to correct classification.  
+
+![barchart](images/GPA_bar.png)
+
+
+Model performance metrics improved in the modeling process.  Accuracy score tended to improve from high 60%'s' to just over 70% with tuning.  The Best F1 score came from gaussian naive bayes at about 65%.  I achieved best precision metrics with random forest and best recall with recall with gaussian naive bayes at 81%.  
+The following curves are precision/ recall tradoff curve for the best performing models:
+
+![precisionrecall](images/p_r_int.png)
+
+College dropout rate is about 40%, or in other terms college implicitly correctly classify about 60% of applicants with thier admissions process.  While the classification task performed in this study is similiar to, it is not precisely comparable to the classification done by colleges.  The subset of data I have used includes community college and trade school students that likely do not apply to a four year college.  In this way my classification task somewhat different, as the models here have to parse individuals that a college would quickly deny admission to.  I chose this particular subset of the data to give the modeling the widest possible relevance to a randomly selected high school student.  
+### Conclusions
+This study reveals what may seem obvious.  Succesfull college students have verbal and mathematical standardized testing scores that are, on average 1 standard deviation or more above thier peers. Specifically, mathematical reasoning ability gives the student a particular advantage in completing a college degree... and ultimately in the economy.   Succesful college students are disciplined, in that they limit hedonic pursuits and invest significant time outside of class on homework.  They tend to come from a home environment that is low in risk factors like broken family structure, frequent changes in school, or poverty and has reading material readily available. And finally they tend to have a track record of high achievment as indicated by thier high school grade point average.
+<br>
+
+I believe that recall score is the most usefull metric with regard to actuall use case of this study. Recall will recommend a larger number of admits than other metrics.  While drop-out rates will be higher with recall used as the primary evaluation metric, I think it can be used with higher confidence than the evaluated .74 would suggest; although, my analysis at this point cannot fully support some claims I am about to make, my intuition tells me that college enrollments are too high when considered in light of the actual return on investment that many students can hope to get from the aspired credential.  Students may select too wide a pool of incoming freshmen to service the institution's business interests.  
+
+To what degree colleges are not simply selecting for the cognitive elite is not clear. This cognitive elite may have higher earnings outcomes that are caused by thier intelligence, and not strictly as a result of college credentials. Highly capable students may be able to find thier way in the economy succesfully without a college degree.  In other words, it may be that the opportunity cost of college is not always positive for many students that graduate succesfully and that the students for whom the ROI of this adventure might not be positive are likely to be those 'graduatable' marginal students that would be excluded from admission based on the recall metric.  To support this claim I have to do further analysis.  Perhaps a future iteration of this project will take a more definitive look at college ROI and what a student with positive college ROI would look like in high school. An analysis of the excluded-but-graduatable students would be helpful to explore this point.   At this point I recommmend recall score as the performance metric of choice and, i believe, that it could be used with relatively high confidence by a guidance counselor or admissions official.  A guidance counselor can use this modelling, in conjuction with his knowledge of the student to help guide the student to a rational decision.  A student with robust financial support, but marginal qualifications may still find utility in college enrollment, as they will be protected from financial catastrophe in the event of dropout.   A student without a clearly defined vocational ambition, and good metrics as defined by the study, may defer college admission until more he achieves more clarity about the future.  A student that is highly motivated for a voocation that requires college credential, like medicine or engineering, but marginal qualifications, can be counseled about the risks involved and amount of commitment required to bring these aspirations to fruit.  College advising is an art and this study cannot take the art out these decisions, but it can provide solid feedback on the odds of success. With this knowledge and holistic understanding of the student, these findings can enhance the decision making process for high school seniors.  
+
+
+### Next steps
+**Dashboard deployemnt** - build an interface that can take data and return a probablity of college success <br>
+**Study 'false negatives'** - A detailed look at students that were classfied in the 'false negative' quadrant of the confusion matix by the gaussian naive bayes model with the 3 feature dataset would be helpful in confirming or disconfirming my intuition about the ROI of college credentials for that group.   <br>
+**ROI** - Build out a further model of college return-on-investment. I am still working out how to do this. First thoughts are to subset the college graduate class and use the wage data to compare income to a non-college graduates with similiar data profile. Subtract the two and the use the 'time to graduation' data to estimate total cost of college. subtract this from the first caclulation and categorize negative values as negative or positive ROI. Then put the classifier to work predicting postive or negative ROI for that student based on just the high school data.<br>
+**Neural Network** - Build a neural network for this classification task.<br>
+**Multi-class parsing** - With improved performance metrics from a deep learning application it may be possible to identify students best suited to four year college, community college, and trade school.
+
+### More info
+For a more detailed look at this analysis see the [repository](https://github.com/eonslemp/ML_assisted-college_advising) or contact Eon Slemp at eonslemp@gmail.com<br>
+The data used is from the Educational Longitudinal Study of 2002:  https://nces.ed.gov/OnlineCodebook/Session/Codebook/464e26ac-050e-4cc2-9347-1297cf285b4f
